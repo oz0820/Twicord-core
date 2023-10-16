@@ -1,7 +1,9 @@
+from dotenv import load_dotenv
+import sys
+import os
+
 from src.utils import create_webhook_content, send_webhook
 from src.get_tweet import get_tweet_data
-from dotenv import load_dotenv
-import os
 
 load_dotenv()
 WEBHOOK_URL = os.getenv('WEBHOOK_URL')
