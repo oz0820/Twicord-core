@@ -104,9 +104,9 @@ def get_tweet_data(tweet_id):
     tweet_data = {
         "data": {
             "public_metrics": {
-                'like_count': public_metrics.get('like_count'),
-                'quote_count': public_metrics.get('quote_count'),
-                'retweet_count': public_metrics.get('retweet_count'),
+                "like_count": public_metrics.get('like_count'),
+                "quote_count": public_metrics.get('quote_count'),
+                "retweet_count": public_metrics.get('retweet_count'),
                 "bookmark_count": public_metrics.get('bookmark_count'),
             },
             "text": unescape(tweet_og_description),
