@@ -1,4 +1,4 @@
-from selenium.webdriver.common.by import By
+from xml.sax.saxutils import unescape
 from bs4 import BeautifulSoup
 import time
 
@@ -103,7 +103,7 @@ def get_tweet_data(tweet_id):
                 'retweet_count': public_metrics.get('retweet_count'),
                 "bookmark_count": public_metrics.get('bookmark_count'),
             },
-            "text": tweet_og_description,
+            "text": unescape(tweet_og_description),
             "id": tweet_og_url.split('/')[-1],
             "url": tweet_og_url,
             "image_urls": tweet_image_urls,
@@ -111,7 +111,7 @@ def get_tweet_data(tweet_id):
 
         },
         "user": {
-            "name": user_name,
+            "name": unescape(user_name),
             "screen_name": user_screen_name,
             "url": user_url,
             "profile_image_url": profile_image_url
