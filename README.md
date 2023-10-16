@@ -22,10 +22,10 @@ docker-compose up -d
 {
     "data": {
         "public_metrics": {
-            "like_count": str or null,
-            "quote_count": str or null,
-            "retweet_count": str or null,
-            "bookmark_count": str or null,
+            "like_count": str,
+            "quote_count": str,
+            "retweet_count": str,
+            "bookmark_count": str,
         },
         "text": str,
         "id": str,

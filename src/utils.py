@@ -22,7 +22,7 @@ def get_driver():
 
 def send_webhook(webhook_url, embeds):
     res = requests.post(webhook_url, json.dumps(embeds), headers={'Content-Type': 'application/json'})
-    print(res.status_code)
+    print('status_code', res.status_code)
 
 
 def create_webhook_content(tweet_data: dict):

@@ -71,10 +71,10 @@ def get_tweet_data(tweet_id):
     # post_datetime = _post_datetime_jst.strftime('%Y/%m/%d %H:%M')
 
     public_metrics = {
-        "retweet_count": None,
-        "quote_count": None,
-        "like_count": None,
-        "bookmark_count": None,
+        "retweet_count": "0",
+        "quote_count": "0",
+        "like_count": "0",
+        "bookmark_count": "0",
     }
     for c in tweet_elm.select_one('div[role="group"]').children:
         if c.get_text().find('Repost') != -1:
