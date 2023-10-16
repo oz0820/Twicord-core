@@ -26,33 +26,6 @@ def send_webhook(webhook_url, embeds):
 
 
 def create_webhook_content(tweet_data: dict):
-    # Like/Likesなどの入れ替え処理
-    fields = []
-    if 0 < tweet_data.get('data').get('public_metrics').get('like_count') < 2:
-        fields.append({
-            "name": "Like",
-            "value": str(tweet_data.get('data').get('public_metrics').get('like_count')),
-            "inline": True
-        })
-    elif 1 < tweet_data.get('data').get('public_metrics').get('like_count'):
-        fields.append({
-            "name": "Likes",
-            "value": str(tweet_data.get('data').get('public_metrics').get('like_count')),
-            "inline": True
-        })
-
-    if 0 < tweet_data.get('data').get('public_metrics').get('retweet_count') < 2:
-        fields.append({
-            "name": "Retweets",
-            "value": str(tweet_data.get('data').get('public_metrics').get('retweet_count')),
-            "inline": True
-        })
-    elif 1 < tweet_data.get('data').get('public_metrics').get('retweet_count'):
-        fields.append({
-            "name": "Retweets",
-            "value": str(tweet_data.get('data').get('public_metrics').get('retweet_count')),
-            "inline": True
-        })
 
     # ベースとなるデータ構造
     webhook_content = {
@@ -66,7 +39,18 @@ def create_webhook_content(tweet_data: dict):
                     "url": tweet_data.get('user').get('url'),
                     "icon_url": tweet_data.get('user').get('profile_image_url'),
                 },
-                "fields": fields,
+                "fields": [
+                    {
+                        "name": "Likes",
+                        "value": tweet_data.get('data').get('public_metrics').get('like_count'),
+                        "inline": True
+                    },
+                    {
+                        "name": "Retweets",
+                        "value": tweet_data.get('data').get('public_metrics').get('retweet_count'),
+                        "inline": True
+                    }
+                ],
                 "description": tweet_data.get('data').get('text'),
                 "timestamp": tweet_data.get('data').get('created_at'),
             }

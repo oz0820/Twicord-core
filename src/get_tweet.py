@@ -71,20 +71,20 @@ def get_tweet_data(tweet_id):
     # post_datetime = _post_datetime_jst.strftime('%Y/%m/%d %H:%M')
 
     public_metrics = {
-        "retweet_count": 0,
-        "quote_count": 0,
-        "like_count": 0,
-        "bookmark_count": 0,
+        "retweet_count": None,
+        "quote_count": None,
+        "like_count": None,
+        "bookmark_count": None,
     }
     for c in tweet_elm.select_one('div[role="group"]').children:
         if c.get_text().find('Repost') != -1:
-            public_metrics['retweet_count'] = int(c.select_one('span[data-testid]').get_text().replace(',', ''))
+            public_metrics['retweet_count'] = c.select_one('span[data-testid]').get_text()
         elif c.get_text().find('Quote') != -1:
-            public_metrics['quote_count'] = int(c.select_one('span[data-testid]').get_text().replace(',', ''))
+            public_metrics['quote_count'] = c.select_one('span[data-testid]').get_text()
         elif c.get_text().find('Like') != -1:
-            public_metrics['like_count'] = int(c.select_one('span[data-testid]').get_text().replace(',', ''))
+            public_metrics['like_count'] = c.select_one('span[data-testid]').get_text()
         elif c.get_text().find('Bookmark') != -1:
-            public_metrics['bookmark_count'] = int(c.select_one('span[data-testid]').get_text().replace(',', ''))
+            public_metrics['bookmark_count'] = c.select_one('span[data-testid]').get_text()
 
     # 引用RTの引用元を削除する
     for del_elm in tweet_elm.select_one(' div > div > div:nth-child(3)').select('div[id] > div[id]'):
@@ -94,6 +94,12 @@ def get_tweet_data(tweet_id):
     for elm in tweet_elm.find_all('img', attrs={'alt': 'Image'}):
         tweet_url = elm.get('src').split('?')[0] + '?format=webp&name=large'
         tweet_image_urls.append(tweet_url)
+
+    # GIF/Video
+    for elm in tweet_elm.find_all('video', attrs={"aria-label": "Embedded video"}):
+        thumbnail_url = elm.get('poster')
+        url = elm.get('src')
+        # tweet_image_urls.append(thumbnail_url)
 
     tweet_data = {
         "data": {
