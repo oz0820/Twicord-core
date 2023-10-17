@@ -15,6 +15,14 @@ docker-compose up -d
 - お好みのTweetIdを指定してください。
 
 
+### `.env`の設定
+|                   |                                                                          |
+|:------------------|:-------------------------------------------------------------------------|
+| WEBHOOK_URL       | Discordに送信するためのWebhookURL                                                |
+| DATE_TYPE         | embed最下部の日時表示の種類。 absolute: 絶対時間, relative: 相対時間                         |
+| CREATED_AT_FORMAT | 日時を文字列化するときに使うフォーマット。 datetimeのstrftimeに渡される。DATE_TYPEがrelativeの時に参照される。 |
+
+
 ### tweet_dataの形式
 `src.get_tweet`内の`create_webhook_content`で生成されるdictオブジェクトの構成です。  
 うっすらとTwitter API v2味があります
@@ -31,7 +39,7 @@ docker-compose up -d
         "id": str,
         "url": str,
         "image_urls": list[str],
-        "created_at": str(datetime)
+        "created_at": datetime
 
     },
     "user": {

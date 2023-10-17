@@ -1,6 +1,11 @@
+import os
+from datetime import timezone, timedelta
 from selenium import webdriver
+from dotenv import load_dotenv
 import json
 import requests
+
+load_dotenv()
 
 
 def get_driver():
@@ -52,10 +57,22 @@ def create_webhook_content(tweet_data: dict):
                     }
                 ],
                 "description": tweet_data.get('data').get('text'),
-                "timestamp": tweet_data.get('data').get('created_at'),
             }
         ]
     }
+
+    # 投稿日時の埋め込み
+    if os.getenv('CREATED_AT_TYPE') == "absolute":
+        webhook_content['embeds'][0]['timestamp'] = tweet_data.get('data').get('created_at').strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+    elif os.getenv('CREATED_AT_TYPE') == 'relative':
+        created_at_utc = tweet_data.get('data').get('created_at')
+        created_at_jst = created_at_utc.replace(tzinfo=timezone.utc).astimezone(timezone(timedelta(hours=+9)))
+        CREATED_AT_FORMAT = os.getenv('CREATED_AT_FORMAT')
+
+        webhook_content['embeds'][0]['footer'] = {
+            "icon_url": "https://www.google.com/s2/favicons?sz=64&domain=pbs.twimg.com",
+            "text": "Twitter･" + created_at_jst.strftime(CREATED_AT_FORMAT)
+        }
 
     # 画像を枚数分埋め込む
     for count, image_url in enumerate(tweet_data.get('data').get('image_urls')):

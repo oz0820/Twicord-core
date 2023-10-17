@@ -1,4 +1,5 @@
 from xml.sax.saxutils import unescape
+from datetime import datetime
 from bs4 import BeautifulSoup
 import time
 
@@ -42,7 +43,7 @@ def get_tweet_data(tweet_id):
     user_url = f'https://twitter.com/{user_screen_name}'
 
     # 投稿日時(UTC)
-    post_datetime = soup.select_one('time[datetime]').get('datetime')
+    created_at = datetime.strptime(soup.select_one('time[datetime]').get('datetime'), '%Y-%m-%dT%H:%M:%S.%fZ')
 
     # いいね/RT数を抜き出し
     public_metrics = {
@@ -89,7 +90,7 @@ def get_tweet_data(tweet_id):
             "id": tweet_og_url.split('/')[-1],          # ツイートURLから取得
             "url": tweet_og_url,                        # ツイートURL。metaのog:urlから取得
             "image_urls": tweet_image_urls,             # list[str] 添付画像のURL
-            "created_at": post_datetime                 # datetime型の文字列
+            "created_at": created_at                 # datetime型
         },
         "user": {
             "name": unescape(user_name),                # 表示名
